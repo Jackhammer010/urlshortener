@@ -36,8 +36,8 @@ public class CustomSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request-> request
-                        .requestMatchers("api/auth/**").permitAll()
-                        .requestMatchers("api/urls/**").authenticated()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/urls/**").authenticated()
                         .requestMatchers("/{shortUrl}").permitAll()
                         .anyRequest())
                 .authenticationProvider(authenticationProvider(userDetailsService))
