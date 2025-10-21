@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -58,5 +60,11 @@ public class UrlMappingService {
         urlMappingDto.setUsername(urlMapping.getUser().getUsername());
 
         return urlMappingDto;
+    }
+
+    public List<UrlMappingDto> getUrlsByUser(User user) {
+        return urlMappingRepository.findByUser(user).stream()
+                .map(this::convertToDto)
+                .toList();
     }
 }
