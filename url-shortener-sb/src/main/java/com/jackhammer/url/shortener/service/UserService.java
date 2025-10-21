@@ -10,7 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +19,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private PasswordEncoder passwordEncoder;
-    private UserRepository userRepository;
-    private AuthenticationManager authenticationManager;
-    private JwtUtils jwtUtils;
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
+
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User with username " + username + " not found"));
+    }
 
     public User registerUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
